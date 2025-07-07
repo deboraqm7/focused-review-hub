@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { debounce } from 'lodash';
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,43 +24,22 @@ interface SubjectManagerProps {
 }
 
 const subjectColors = [
-  { name: 'Azul', value: 'bg-[#2F80ED]', class: 'bg-[#2F80ED]' },
-  { name: 'Verde', value: 'bg-[#1DB05F]', class: 'bg-[#1DB05F]' },
-  { name: 'Roxo', value: 'bg-[#9B6AD7]', class: 'bg-[#9B6AD7]' },
-  { name: 'Laranja', value: 'bg-[#F5A623]', class: 'bg-[#F5A623]' },
-  { name: 'Rosa', value: 'bg-[#E255A1]', class: 'bg-[#E255A1]' },
-  { name: 'Verde-água', value: 'bg-[#55BCC9]', class: 'bg-[#55BCC9]' },
+  { name: 'Azul', value: 'bg-blue-500', class: 'bg-blue-500' },
+  { name: 'Verde', value: 'bg-green-500', class: 'bg-green-500' },
+  { name: 'Roxo', value: 'bg-purple-500', class: 'bg-purple-500' },
+  { name: 'Laranja', value: 'bg-orange-500', class: 'bg-orange-500' },
+  { name: 'Rosa', value: 'bg-pink-500', class: 'bg-pink-500' },
+  { name: 'Verde-água', value: 'bg-teal-500', class: 'bg-teal-500' },
 ];
 
 export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManagerProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newSubject, setNewSubject] = useState({
     name: '',
-    color: 'bg-[#2F80ED]', // Atualizado para o azul do Notion
+    color: 'bg-blue-500',
     category: 'theoretical' as 'theoretical' | 'practical' | 'mixed'
   });
-  const [showSaved, setShowSaved] = useState(false);
   const { toast } = useToast();
-
-  // Carrega matérias do localStorage ao iniciar
-  useEffect(() => {
-    const savedSubjects = localStorage.getItem('subjects');
-    if (savedSubjects) {
-      setSubjects(JSON.parse(savedSubjects));
-    }
-  }, [setSubjects]);
-
-  // Salvamento automático
-  const saveSubjects = debounce((updatedSubjects: Subject[]) => {
-    localStorage.setItem('subjects', JSON.stringify(updatedSubjects));
-    setShowSaved(true);
-    setTimeout(() => setShowSaved(false), 2000);
-  }, 5000);
-
-  useEffect(() => {
-    saveSubjects(subjects);
-    return () => saveSubjects.cancel();
-  }, [subjects]);
 
   const addSubject = () => {
     if (!newSubject.name.trim()) {
@@ -91,7 +69,7 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
     };
 
     setSubjects([...subjects, subject]);
-    setNewSubject({ name: '', color: 'bg-[#2F80ED]', category: 'theoretical' });
+    setNewSubject({ name: '', color: 'bg-blue-500', category: 'theoretical' });
     setIsDialogOpen(false);
     
     toast({
@@ -121,10 +99,10 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'theoretical': return 'bg-[#2F80ED] text-white'; // Atualizado para Notion Blue
-      case 'practical': return 'bg-[#1DB05F] text-white'; // Atualizado para Notion Green
-      case 'mixed': return 'bg-[#9B6AD7] text-white'; // Atualizado para Notion Purple
-      default: return 'bg-[#E5E5E5] text-gray-800'; // Notion Default (Gray)
+      case 'theoretical': return 'bg-blue-100 text-blue-800';
+      case 'practical': return 'bg-green-100 text-green-800';
+      case 'mixed': return 'bg-purple-100 text-purple-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -147,16 +125,14 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
               <ArrowLeft className="h-4 w-4" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, color: '#333333' }}>
-                Gerenciamento de Matérias
-              </h1>
+              <h1 className="text-2xl font-bold">Gerenciamento de Matérias</h1>
               <p className="text-muted-foreground">Organize suas matérias de estudo ({subjects.length}/6)</p>
             </div>
           </div>
 
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button disabled={subjects.length >= 6} style={{ background: '#4A90E2', color: '#FFFFFF', fontFamily: 'Inter, sans-serif', fontWeight: 500, borderRadius: '8px' }}>
+              <Button disabled={subjects.length >= 6}>
                 <Plus className="h-4 w-4 mr-2" />
                 Adicionar Matéria
               </Button>
@@ -176,7 +152,6 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
                     placeholder="ex: Direito Constitucional, Matemática, Português"
                     value={newSubject.name}
                     onChange={(e) => setNewSubject(prev => ({ ...prev, name: e.target.value }))}
-                    style={{ fontFamily: 'Inter, sans-serif', color: '#333333', borderRadius: '4px' }}
                   />
                 </div>
 
@@ -188,7 +163,7 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
                       setNewSubject(prev => ({ ...prev, category: value }))
                     }
                   >
-                    <SelectTrigger style={{ fontFamily: 'Inter, sans-serif', color: '#333333', borderRadius: '4px' }}>
+                    <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -206,7 +181,7 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
                       <button
                         key={color.value}
                         className={`w-8 h-8 rounded-full ${color.class} ${
-                          newSubject.color === color.value ? 'ring-2 ring-offset-2 ring-[#2F80ED]' : ''
+                          newSubject.color === color.value ? 'ring-2 ring-offset-2 ring-primary' : ''
                         }`}
                         onClick={() => setNewSubject(prev => ({ ...prev, color: color.value }))}
                       />
@@ -215,12 +190,10 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
                 </div>
 
                 <div className="flex justify-end space-x-2">
-                  <Button variant="outline" onClick={() => setIsDialogOpen(false)} style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500, borderRadius: '8px' }}>
+                  <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
                     Cancelar
                   </Button>
-                  <Button onClick={addSubject} style={{ background: '#4A90E2', color: '#FFFFFF', fontFamily: 'Inter, sans-serif', fontWeight: 500, borderRadius: '8px' }}>
-                    Adicionar Matéria
-                  </Button>
+                  <Button onClick={addSubject}>Adicionar Matéria</Button>
                 </div>
               </div>
             </DialogContent>
@@ -238,7 +211,7 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
               </p>
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button style={{ background: '#4A90E2', color: '#FFFFFF', fontFamily: 'Inter, sans-serif', fontWeight: 500, borderRadius: '8px' }}>
+                  <Button>
                     <Plus className="h-4 w-4 mr-2" />
                     Adicionar Sua Primeira Matéria
                   </Button>
@@ -254,15 +227,13 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <div className={`w-4 h-4 rounded-full ${subject.color}`} />
-                      <CardTitle className="text-lg" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, color: '#333333' }}>
-                        {subject.name}
-                      </CardTitle>
+                      <CardTitle className="text-lg">{subject.name}</CardTitle>
                     </div>
                     <Button 
                       variant="ghost" 
                       size="icon"
                       onClick={() => removeSubject(subject.id)}
-                      className="hover:bg-[#E255A1]/10 hover:text-[#E255A1]" // Rosa do Notion para hover
+                      className="hover:bg-destructive/10 hover:text-destructive"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -295,9 +266,7 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
         {subjects.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, color: '#333333' }}>
-                Prévia do Ciclo de Estudos
-              </CardTitle>
+              <CardTitle>Prévia do Ciclo de Estudos</CardTitle>
               <CardDescription>
                 Suas matérias serão alternadas nesta ordem para garantir aprendizado equilibrado
               </CardDescription>
@@ -323,9 +292,7 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
         {/* Tips */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, color: '#333333' }}>
-              Dicas de Organização
-            </CardTitle>
+            <CardTitle className="text-lg">Dicas de Organização</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="space-y-2 text-sm text-muted-foreground">
@@ -337,13 +304,6 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
             </ul>
           </CardContent>
         </Card>
-
-        {/* Notificação de Salvamento */}
-        {showSaved && (
-          <div className="fixed bottom-4 right-4 bg-[#F5A623] text-white px-4 py-2 rounded-lg shadow-lg" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
-            Salvo!
-          </div>
-        )}
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { debounce } from 'lodash'; // Adicionado lodash
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -29,48 +28,16 @@ interface StudyTimerProps {
 }
 
 export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerProps) => {
-  const [timeLeft, setTimeLeft] = useState(() => {
-    const saved = localStorage.getItem('studyTimer');
-    return saved ? JSON.parse(saved).timeLeft ?? 60 * 60 : 60 * 60;
-  });
-  const [isRunning, setIsRunning] = useState(() => {
-    const saved = localStorage.getItem('studyTimer');
-    return saved ? JSON.parse(saved).isRunning ?? false : false;
-  });
-  const [isPaused, setIsPaused] = useState(() => {
-    const saved = localStorage.getItem('studyTimer');
-    return saved ? JSON.parse(saved).isPaused ?? false : false;
-  });
-  const [isBreak, setIsBreak] = useState(() => {
-    const saved = localStorage.getItem('studyTimer');
-    return saved ? JSON.parse(saved).isBreak ?? false : false;
-  });
-  const [breakTime, setBreakTime] = useState(() => {
-    const saved = localStorage.getItem('studyTimer');
-    return saved ? JSON.parse(saved).breakTime ?? 5 * 60 : 5 * 60;
-  });
-  const [sessionStarted, setSessionStarted] = useState(() => {
-    const saved = localStorage.getItem('studyTimer');
-    return saved ? JSON.parse(saved).sessionStarted ?? false : false;
-  });
-  const [showSaved, setShowSaved] = useState(false); // Estado para notificação
+  const [timeLeft, setTimeLeft] = useState(60 * 60); // 60 minutes in seconds
+  const [isRunning, setIsRunning] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isBreak, setIsBreak] = useState(false);
+  const [breakTime, setBreakTime] = useState(5 * 60); // 5 minutes break
+  const [sessionStarted, setSessionStarted] = useState(false);
 
   const totalTime = isBreak ? 5 * 60 : 60 * 60;
   const currentTime = isBreak ? breakTime : timeLeft;
   const progress = ((totalTime - currentTime) / totalTime) * 100;
-
-  // Salvamento automático
-  const saveTimerState = debounce(() => {
-    const state = { timeLeft, isRunning, isPaused, isBreak, breakTime, sessionStarted };
-    localStorage.setItem('studyTimer', JSON.stringify(state));
-    setShowSaved(true);
-    setTimeout(() => setShowSaved(false), 2000); // Notificação por 2s
-  }, 5000);
-
-  useEffect(() => {
-    saveTimerState();
-    return () => saveTimerState.cancel(); // Cancela debounce ao desmontar
-  }, [timeLeft, isRunning, isPaused, isBreak, breakTime, sessionStarted]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -88,22 +55,23 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
             return prev - 1;
           });
         } else {
-          setTimeLeft(prev => {
-            if (prev <= 1) {
-              if (subject) {
-                const session: StudySession = {
-                  id: Date.now().toString(),
-                  subjectId: subject.id,
-                  duration: 60,
-                  date: new Date(),
-                  completed: true
-                };
-                onSessionComplete(session);
-              }
-              return 0;
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            // Sessão completada
+            if (subject) {
+              const session: StudySession = {
+                id: Date.now().toString(),
+                subjectId: subject.id,
+                duration: 60,
+                date: new Date(),
+                completed: true
+              };
+              onSessionComplete(session);
             }
-            return prev - 1;
-          });
+            return 0;
+          }
+          return prev - 1;
+        });
         }
       }, 1000);
     }
@@ -164,9 +132,7 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, color: '#333333' }}>
-              Sessão de Estudo
-            </h1>
+            <h1 className="text-2xl font-bold">Sessão de Estudo</h1>
             <p className="text-muted-foreground">Hora do foco para {subject.name}</p>
           </div>
         </div>
@@ -202,7 +168,6 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
                   onClick={startSession}
                   size="lg"
                   className="px-8"
-                  style={{ background: '#4A90E2', color: '#FFFFFF', fontFamily: 'Inter, sans-serif', fontWeight: 500, borderRadius: '8px' }}
                 >
                   <Play className="h-5 w-5 mr-2" />
                   Iniciar Sessão
@@ -213,7 +178,6 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
                     onClick={pauseSession}
                     variant="outline"
                     size="lg"
-                    style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500, borderRadius: '8px' }}
                   >
                     {isPaused ? <Play className="h-5 w-5 mr-2" /> : <Pause className="h-5 w-5 mr-2" />}
                     {isPaused ? 'Continuar' : 'Pausar'}
@@ -222,7 +186,6 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
                     onClick={stopSession}
                     variant="destructive"
                     size="lg"
-                    style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500, borderRadius: '8px' }}
                   >
                     <Square className="h-5 w-5 mr-2" />
                     Parar
@@ -238,7 +201,6 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
                   onClick={startBreak}
                   variant="secondary"
                   className="mt-4"
-                  style={{ background: '#50C878', color: '#FFFFFF', fontFamily: 'Inter, sans-serif', fontWeight: 500, borderRadius: '8px' }}
                 >
                   <Coffee className="h-4 w-4 mr-2" />
                   Fazer uma Pausa
@@ -278,13 +240,6 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
             </ul>
           </CardContent>
         </Card>
-
-        {/* Notificação de Salvamento */}
-        {showSaved && (
-          <div className="fixed bottom-4 right-4 bg-[#F5A623] text-white px-4 py-2 rounded-lg shadow-lg" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
-            Salvo!
-          </div>
-        )}
       </div>
     </div>
   );
