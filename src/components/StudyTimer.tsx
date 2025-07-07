@@ -55,23 +55,23 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
             return prev - 1;
           });
         } else {
-          setTimeLeft(prev => {
-            if (prev <= 1) {
-              // Session completed
-              if (subject) {
-                const session: StudySession = {
-                  id: Date.now().toString(),
-                  subjectId: subject.id,
-                  duration: 60,
-                  date: new Date(),
-                  completed: true
-                };
-                onSessionComplete(session);
-              }
-              return 0;
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            // Sessão completada
+            if (subject) {
+              const session: StudySession = {
+                id: Date.now().toString(),
+                subjectId: subject.id,
+                duration: 60,
+                date: new Date(),
+                completed: true
+              };
+              onSessionComplete(session);
             }
-            return prev - 1;
-          });
+            return 0;
+          }
+          return prev - 1;
+        });
         }
       }, 1000);
     }
@@ -114,9 +114,9 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
         <Card className="w-full max-w-md">
           <CardContent className="p-6 text-center">
             <Clock className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-            <h2 className="text-xl font-semibold mb-2">No Subject Selected</h2>
-            <p className="text-muted-foreground mb-4">Please add subjects first to start studying</p>
-            <Button onClick={onBack}>Go Back</Button>
+            <h2 className="text-xl font-semibold mb-2">Nenhuma Matéria Selecionada</h2>
+            <p className="text-muted-foreground mb-4">Por favor, adicione matérias primeiro para começar a estudar</p>
+            <Button onClick={onBack}>Voltar</Button>
           </CardContent>
         </Card>
       </div>
@@ -132,8 +132,8 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold">Study Session</h1>
-            <p className="text-muted-foreground">Focus time for {subject.name}</p>
+            <h1 className="text-2xl font-bold">Sessão de Estudo</h1>
+            <p className="text-muted-foreground">Hora do foco para {subject.name}</p>
           </div>
         </div>
 
@@ -146,7 +146,7 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
               <span>{subject.name}</span>
             </CardTitle>
             <CardDescription>
-              {isBreak ? 'Take a short break' : 'Deep focus session'}
+              {isBreak ? 'Faça uma pausa rápida' : 'Sessão de foco profundo'}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -157,7 +157,7 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
               </div>
               <Progress value={progress} className="w-full h-4 mb-4" />
               <Badge variant={isBreak ? "secondary" : "default"} className="text-sm">
-                {isBreak ? 'Break Time' : 'Study Time'}
+                {isBreak ? 'Hora do Intervalo' : 'Hora de Estudar'}
               </Badge>
             </div>
 
@@ -170,7 +170,7 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
                   className="px-8"
                 >
                   <Play className="h-5 w-5 mr-2" />
-                  Start Session
+                  Iniciar Sessão
                 </Button>
               ) : (
                 <>
@@ -180,7 +180,7 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
                     size="lg"
                   >
                     {isPaused ? <Play className="h-5 w-5 mr-2" /> : <Pause className="h-5 w-5 mr-2" />}
-                    {isPaused ? 'Resume' : 'Pause'}
+                    {isPaused ? 'Continuar' : 'Pausar'}
                   </Button>
                   <Button 
                     onClick={stopSession}
@@ -188,7 +188,7 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
                     size="lg"
                   >
                     <Square className="h-5 w-5 mr-2" />
-                    Stop
+                    Parar
                   </Button>
                 </>
               )}
@@ -203,7 +203,7 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
                   className="mt-4"
                 >
                   <Coffee className="h-4 w-4 mr-2" />
-                  Take a Break
+                  Fazer uma Pausa
                 </Button>
               </div>
             )}
@@ -216,11 +216,11 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
             <div className="grid grid-cols-2 gap-4 text-center">
               <div>
                 <p className="text-2xl font-bold text-primary">60</p>
-                <p className="text-sm text-muted-foreground">Minutes Session</p>
+                <p className="text-sm text-muted-foreground">Minutos de Sessão</p>
               </div>
               <div>
                 <p className="text-2xl font-bold text-secondary">5</p>
-                <p className="text-sm text-muted-foreground">Minutes Break</p>
+                <p className="text-sm text-muted-foreground">Minutos de Pausa</p>
               </div>
             </div>
           </CardContent>
@@ -229,14 +229,14 @@ export const StudyTimer = ({ subject, onSessionComplete, onBack }: StudyTimerPro
         {/* Study Tips */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Study Tips</CardTitle>
+            <CardTitle className="text-lg">Dicas de Estudo</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>• Eliminate distractions and put your phone on silent mode</li>
-              <li>• Take notes actively while studying</li>
-              <li>• Use the Pomodoro technique for maximum focus</li>
-              <li>• Stay hydrated and maintain good posture</li>
+              <li>• Elimine distrações e coloque o celular no silencioso</li>
+              <li>• Faça anotações ativas enquanto estuda</li>
+              <li>• Use a técnica Pomodoro para máximo foco</li>
+              <li>• Mantenha-se hidratado e mantenha uma boa postura</li>
             </ul>
           </CardContent>
         </Card>

@@ -25,7 +25,7 @@ interface ReviewItem {
   error: ErrorEntry;
   reviewDate: Date;
   daysDue: number;
-  interval: '1 day' | '7 days' | '14 days' | '30 days';
+  interval: '1 dia' | '7 dias' | '14 dias' | '30 dias';
 }
 
 export const ReviewSchedule = ({ errors, onBack }: ReviewScheduleProps) => {
@@ -39,7 +39,7 @@ export const ReviewSchedule = ({ errors, onBack }: ReviewScheduleProps) => {
     errors.forEach(error => {
       error.reviewDates.forEach((reviewDate, index) => {
         const daysDue = Math.floor((now.getTime() - reviewDate.getTime()) / (1000 * 60 * 60 * 24));
-        const intervals = ['1 day', '7 days', '14 days', '30 days'] as const;
+        const intervals = ['1 dia', '7 dias', '14 dias', '30 dias'] as const;
         
         items.push({
           error,
@@ -62,8 +62,8 @@ export const ReviewSchedule = ({ errors, onBack }: ReviewScheduleProps) => {
     setCompletedReviews(prev => new Set([...prev, reviewKey]));
     
     toast({
-      title: "Review Completed",
-      description: "Great job! This review has been marked as complete.",
+      title: "Revisão Concluída",
+      description: "Excelente! Esta revisão foi marcada como concluída.",
     });
   };
 
@@ -74,10 +74,10 @@ export const ReviewSchedule = ({ errors, onBack }: ReviewScheduleProps) => {
 
   const getIntervalColor = (interval: string) => {
     switch (interval) {
-      case '1 day': return 'bg-red-100 text-red-800';
-      case '7 days': return 'bg-orange-100 text-orange-800';
-      case '14 days': return 'bg-yellow-100 text-yellow-800';
-      case '30 days': return 'bg-green-100 text-green-800';
+      case '1 dia': return 'bg-red-100 text-red-800';
+      case '7 dias': return 'bg-orange-100 text-orange-800';
+      case '14 dias': return 'bg-yellow-100 text-yellow-800';
+      case '30 dias': return 'bg-green-100 text-green-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -107,18 +107,18 @@ export const ReviewSchedule = ({ errors, onBack }: ReviewScheduleProps) => {
                     <div className="space-y-2 flex-1">
                       <div className="flex items-center space-x-2">
                         <Badge className={getIntervalColor(item.interval)}>
-                          {item.interval} review
+                          Revisão de {item.interval}
                         </Badge>
                         <Badge variant="outline">{item.error.topic}</Badge>
                         {item.daysDue > 0 && (
                           <Badge variant="destructive">
-                            {item.daysDue} day{item.daysDue > 1 ? 's' : ''} overdue
+                            {item.daysDue} dia{item.daysDue > 1 ? 's' : ''} em atraso
                           </Badge>
                         )}
                         {completed && (
                           <Badge variant="secondary" className="bg-green-100 text-green-800">
                             <CheckCircle className="h-3 w-3 mr-1" />
-                            Completed
+                            Concluída
                           </Badge>
                         )}
                       </div>
@@ -129,11 +129,11 @@ export const ReviewSchedule = ({ errors, onBack }: ReviewScheduleProps) => {
                       <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                         <div className="flex items-center space-x-1">
                           <Calendar className="h-4 w-4" />
-                          <span>Due: {item.reviewDate.toLocaleDateString()}</span>
+                          <span>Vencimento: {item.reviewDate.toLocaleDateString('pt-BR')}</span>
                         </div>
                         <div className="flex items-center space-x-1">
                           <Clock className="h-4 w-4" />
-                          <span>Originally logged: {item.error.date.toLocaleDateString()}</span>
+                          <span>Registrado originalmente: {item.error.date.toLocaleDateString('pt-BR')}</span>
                         </div>
                       </div>
                     </div>
@@ -144,7 +144,7 @@ export const ReviewSchedule = ({ errors, onBack }: ReviewScheduleProps) => {
                         className="ml-4"
                       >
                         <CheckCircle className="h-4 w-4 mr-1" />
-                        Complete
+                        Concluir
                       </Button>
                     )}
                   </div>
@@ -166,12 +166,12 @@ export const ReviewSchedule = ({ errors, onBack }: ReviewScheduleProps) => {
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold">Review Schedule</h1>
-            <p className="text-muted-foreground">Spaced repetition for better retention</p>
+            <h1 className="text-2xl font-bold">Cronograma de Revisões</h1>
+            <p className="text-muted-foreground">Repetição espaçada para melhor retenção</p>
           </div>
         </div>
 
-        {/* Statistics */}
+        {/* Estatísticas */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card className="hover:shadow-lg transition-all duration-300">
             <CardContent className="p-6">
@@ -180,7 +180,7 @@ export const ReviewSchedule = ({ errors, onBack }: ReviewScheduleProps) => {
                   <Clock className="h-6 w-6 text-red-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Overdue</p>
+                  <p className="text-sm text-muted-foreground">Em Atraso</p>
                   <p className="text-2xl font-bold text-red-600">{overdue.length}</p>
                 </div>
               </div>
@@ -194,7 +194,7 @@ export const ReviewSchedule = ({ errors, onBack }: ReviewScheduleProps) => {
                   <Calendar className="h-6 w-6 text-orange-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Due Today</p>
+                  <p className="text-sm text-muted-foreground">Para Hoje</p>
                   <p className="text-2xl font-bold text-orange-600">{dueToday.length}</p>
                 </div>
               </div>
@@ -208,7 +208,7 @@ export const ReviewSchedule = ({ errors, onBack }: ReviewScheduleProps) => {
                   <RefreshCw className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">This Week</p>
+                  <p className="text-sm text-muted-foreground">Esta Semana</p>
                   <p className="text-2xl font-bold text-blue-600">{upcoming.length}</p>
                 </div>
               </div>
@@ -222,7 +222,7 @@ export const ReviewSchedule = ({ errors, onBack }: ReviewScheduleProps) => {
                   <CheckCircle className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Completed</p>
+                  <p className="text-sm text-muted-foreground">Concluídas</p>
                   <p className="text-2xl font-bold text-green-600">{completedReviews.size}</p>
                 </div>
               </div>
@@ -230,16 +230,16 @@ export const ReviewSchedule = ({ errors, onBack }: ReviewScheduleProps) => {
           </Card>
         </div>
 
-        {/* Review Tabs */}
+        {/* Abas de Revisão */}
         {errors.length === 0 ? (
           <Card className="text-center py-12">
             <CardContent>
               <Calendar className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">No Reviews Scheduled</h3>
+              <h3 className="text-xl font-semibold mb-2">Nenhuma Revisão Agendada</h3>
               <p className="text-muted-foreground mb-4">
-                Add errors to your notebook to see them in your review schedule
+                Adicione erros ao seu caderno para vê-los no cronograma de revisões
               </p>
-              <Button onClick={onBack}>Add Errors</Button>
+              <Button onClick={onBack}>Adicionar Erros</Button>
             </CardContent>
           </Card>
         ) : (
@@ -247,69 +247,69 @@ export const ReviewSchedule = ({ errors, onBack }: ReviewScheduleProps) => {
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="overdue" className="flex items-center space-x-2">
                 <Clock className="h-4 w-4" />
-                <span>Overdue ({overdue.length})</span>
+                <span>Em Atraso ({overdue.length})</span>
               </TabsTrigger>
               <TabsTrigger value="today" className="flex items-center space-x-2">
                 <Calendar className="h-4 w-4" />
-                <span>Today ({dueToday.length})</span>
+                <span>Hoje ({dueToday.length})</span>
               </TabsTrigger>
               <TabsTrigger value="upcoming" className="flex items-center space-x-2">
                 <RefreshCw className="h-4 w-4" />
-                <span>This Week ({upcoming.length})</span>
+                <span>Esta Semana ({upcoming.length})</span>
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="overdue" className="mt-6">
               <ReviewList 
                 items={overdue}
-                title="Overdue Reviews"
-                emptyMessage="No overdue reviews! You're caught up 🎉"
+                title="Revisões em Atraso"
+                emptyMessage="Nenhuma revisão em atraso! Você está em dia 🎉"
               />
             </TabsContent>
 
             <TabsContent value="today" className="mt-6">
               <ReviewList 
                 items={dueToday}
-                title="Due Today"
-                emptyMessage="No reviews due today. Take a well-deserved break!"
+                title="Para Hoje"
+                emptyMessage="Nenhuma revisão para hoje. Aproveite para descansar!"
               />
             </TabsContent>
 
             <TabsContent value="upcoming" className="mt-6">
               <ReviewList 
                 items={upcoming}
-                title="Upcoming This Week"
-                emptyMessage="No upcoming reviews this week."
+                title="Próximas da Semana"
+                emptyMessage="Nenhuma revisão próxima esta semana."
               />
             </TabsContent>
           </Tabs>
         )}
 
-        {/* Spaced Repetition Info */}
+        {/* Informações sobre Repetição Espaçada */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">How Spaced Repetition Works</CardTitle>
+            <CardTitle className="text-lg">Como Funciona a Repetição Espaçada</CardTitle>
             <CardDescription>
-              Our system schedules reviews at scientifically optimal intervals
+              Nosso sistema agenda revisões em intervalos cientificamente otimizados
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
               <div className="space-y-2">
-                <Badge className="bg-red-100 text-red-800">1 Day</Badge>
-                <p className="text-sm text-muted-foreground">Initial review after logging error</p>
+                <Badge className="bg-red-100 text-red-800">1 Dia</Badge>
+                <p className="text-sm text-muted-foreground">Revisão inicial após registrar o erro</p>
               </div>
               <div className="space-y-2">
-                <Badge className="bg-orange-100 text-orange-800">7 Days</Badge>
-                <p className="text-sm text-muted-foreground">First spaced repetition</p>
+                <Badge className="bg-orange-100 text-orange-800">7 Dias</Badge>
+                <p className="text-sm text-muted-foreground">Primeira repetição espaçada</p>
               </div>
               <div className="space-y-2">
-                <Badge className="bg-yellow-100 text-yellow-800">14 Days</Badge>
-                <p className="text-sm text-muted-foreground">Second spaced repetition</p>
+                <Badge className="bg-yellow-100 text-yellow-800">14 Dias</Badge>
+                <p className="text-sm text-muted-foreground">Segunda repetição espaçada</p>
               </div>
               <div className="space-y-2">
-                <Badge className="bg-green-100 text-green-800">30 Days</Badge>
-                <p className="text-sm text-muted-foreground">Long-term retention check</p>
+                <Badge className="bg-green-100 text-green-800">30 Dias</Badge>
+                <p className="text-sm text-muted-foreground">Verificação de retenção a longo prazo</p>
               </div>
             </div>
           </CardContent>

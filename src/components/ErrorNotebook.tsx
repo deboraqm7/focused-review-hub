@@ -50,8 +50,8 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
   const addError = () => {
     if (!newError.subjectId || !newError.topic || !newError.question) {
       toast({
-        title: "Error",
-        description: "Please fill in all required fields",
+        title: "Erro",
+        description: "Por favor, preencha todos os campos obrigatórios",
         variant: "destructive",
       });
       return;
@@ -66,10 +66,10 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
       explanation: newError.explanation,
       date: now,
       reviewDates: [
-        new Date(now.getTime() + 24 * 60 * 60 * 1000), // 1 day
-        new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000), // 7 days
-        new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000), // 14 days
-        new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000), // 30 days
+        new Date(now.getTime() + 24 * 60 * 60 * 1000), // 1 dia
+        new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000), // 7 dias
+        new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000), // 14 dias
+        new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000), // 30 dias
       ]
     };
 
@@ -78,22 +78,22 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
     setIsDialogOpen(false);
     
     toast({
-      title: "Error Logged",
-      description: "Error has been added to your notebook with review schedule",
+      title: "Erro Registrado",
+      description: "Erro foi adicionado ao seu caderno com cronograma de revisão",
     });
   };
 
   const removeError = (id: string) => {
     setErrors(errors.filter(e => e.id !== id));
     toast({
-      title: "Error Removed",
-      description: "Error has been removed from your notebook",
+      title: "Erro Removido",
+      description: "Erro foi removido do seu caderno",
     });
   };
 
   const getSubjectName = (subjectId: string) => {
     const subject = subjects.find(s => s.id === subjectId);
-    return subject?.name || 'Unknown Subject';
+    return subject?.name || 'Matéria Desconhecida';
   };
 
   const getSubjectColor = (subjectId: string) => {
@@ -111,7 +111,7 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
     return matchesSearch && matchesSubject;
   });
 
-  // Get error statistics
+  // Obter estatísticas de erros
   const errorsBySubject = subjects.map(subject => ({
     ...subject,
     errorCount: errors.filter(e => e.subjectId === subject.id).length
@@ -127,8 +127,8 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
               <ArrowLeft className="h-4 w-4" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold">Error Notebook</h1>
-              <p className="text-muted-foreground">Track and learn from your mistakes</p>
+              <h1 className="text-2xl font-bold">Caderno de Erros</h1>
+              <p className="text-muted-foreground">Registre e aprenda com seus erros</p>
             </div>
           </div>
 
@@ -136,25 +136,25 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
             <DialogTrigger asChild>
               <Button disabled={subjects.length === 0}>
                 <Plus className="h-4 w-4 mr-2" />
-                Log Error
+                Registrar Erro
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-2xl">
               <DialogHeader>
-                <DialogTitle>Log New Error</DialogTitle>
+                <DialogTitle>Registrar Novo Erro</DialogTitle>
                 <DialogDescription>
-                  Add a mistake to track and schedule for review using spaced repetition
+                  Adicione um erro para acompanhar e agendar para revisão usando repetição espaçada
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="subject">Subject *</Label>
+                  <Label htmlFor="subject">Matéria *</Label>
                   <Select 
                     value={newError.subjectId} 
                     onValueChange={(value) => setNewError(prev => ({ ...prev, subjectId: value }))}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a subject" />
+                      <SelectValue placeholder="Selecione uma matéria" />
                     </SelectTrigger>
                     <SelectContent>
                       {subjects.map((subject) => (
@@ -170,20 +170,20 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="topic">Topic/Concept *</Label>
+                  <Label htmlFor="topic">Tópico/Conceito *</Label>
                   <Input
                     id="topic"
-                    placeholder="e.g., Quadratic Equations, Thermodynamics"
+                    placeholder="ex: Equações Quadráticas, Termodinâmica"
                     value={newError.topic}
                     onChange={(e) => setNewError(prev => ({ ...prev, topic: e.target.value }))}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="question">Question/Problem *</Label>
+                  <Label htmlFor="question">Questão/Problema *</Label>
                   <Textarea
                     id="question"
-                    placeholder="Describe the question or problem you got wrong"
+                    placeholder="Descreva a questão ou problema que você errou"
                     value={newError.question}
                     onChange={(e) => setNewError(prev => ({ ...prev, question: e.target.value }))}
                     rows={3}
@@ -191,10 +191,10 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="explanation">Explanation/Solution</Label>
+                  <Label htmlFor="explanation">Explicação/Solução</Label>
                   <Textarea
                     id="explanation"
-                    placeholder="Explain the correct approach or why you got it wrong (optional)"
+                    placeholder="Explique a abordagem correta ou por que você errou (opcional)"
                     value={newError.explanation}
                     onChange={(e) => setNewError(prev => ({ ...prev, explanation: e.target.value }))}
                     rows={3}
@@ -203,24 +203,24 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
 
                 <div className="flex justify-end space-x-2">
                   <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                    Cancel
+                    Cancelar
                   </Button>
-                  <Button onClick={addError}>Log Error</Button>
+                  <Button onClick={addError}>Registrar Erro</Button>
                 </div>
               </div>
             </DialogContent>
           </Dialog>
         </div>
 
-        {/* Statistics */}
+        {/* Estatísticas */}
         {errorsBySubject.length > 0 && (
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <Target className="h-5 w-5 text-warning" />
-                <span>Error Statistics</span>
+                <span>Estatísticas de Erros</span>
               </CardTitle>
-              <CardDescription>Most frequent errors by subject</CardDescription>
+              <CardDescription>Erros mais frequentes por matéria</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -229,7 +229,7 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
                     <div className={`w-4 h-4 rounded-full ${subject.color}`} />
                     <div className="flex-1">
                       <p className="font-medium">{subject.name}</p>
-                      <p className="text-sm text-muted-foreground">{subject.errorCount} errors</p>
+                      <p className="text-sm text-muted-foreground">{subject.errorCount} erros</p>
                     </div>
                     <Badge variant="secondary">{subject.errorCount}</Badge>
                   </div>
@@ -239,7 +239,7 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
           </Card>
         )}
 
-        {/* Filters */}
+        {/* Filtros */}
         <Card>
           <CardContent className="p-4">
             <div className="flex flex-col md:flex-row gap-4">
@@ -247,7 +247,7 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                   <Input
-                    placeholder="Search errors by topic, question, or subject..."
+                    placeholder="Buscar erros por tópico, questão ou matéria..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-10"
@@ -259,7 +259,7 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Subjects</SelectItem>
+                  <SelectItem value="all">Todas as Matérias</SelectItem>
                   {subjects.map((subject) => (
                     <SelectItem key={subject.id} value={subject.id}>
                       {subject.name}
@@ -271,16 +271,16 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
           </CardContent>
         </Card>
 
-        {/* Error List */}
+        {/* Lista de Erros */}
         {subjects.length === 0 ? (
           <Card className="text-center py-12">
             <CardContent>
               <Target className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">No Subjects Available</h3>
+              <h3 className="text-xl font-semibold mb-2">Nenhuma Matéria Disponível</h3>
               <p className="text-muted-foreground mb-4">
-                Add subjects first to start logging errors
+                Adicione matérias primeiro para começar a registrar erros
               </p>
-              <Button onClick={onBack}>Add Subjects</Button>
+              <Button onClick={onBack}>Adicionar Matérias</Button>
             </CardContent>
           </Card>
         ) : filteredErrors.length === 0 ? (
@@ -288,12 +288,12 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
             <CardContent>
               <Target className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">
-                {errors.length === 0 ? 'No Errors Logged Yet' : 'No Errors Found'}
+                {errors.length === 0 ? 'Nenhum Erro Registrado Ainda' : 'Nenhum Erro Encontrado'}
               </h3>
               <p className="text-muted-foreground mb-4">
                 {errors.length === 0 
-                  ? 'Start logging your mistakes to improve your learning'
-                  : 'Try adjusting your search or filter criteria'
+                  ? 'Comece registrando seus erros para melhorar seu aprendizado'
+                  : 'Tente ajustar sua busca ou critérios de filtro'
                 }
               </p>
               {errors.length === 0 && (
@@ -301,7 +301,7 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
                   <DialogTrigger asChild>
                     <Button>
                       <Plus className="h-4 w-4 mr-2" />
-                      Log Your First Error
+                      Registrar Seu Primeiro Erro
                     </Button>
                   </DialogTrigger>
                 </Dialog>
@@ -323,7 +323,7 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
                       <CardTitle className="text-lg">{error.question}</CardTitle>
                       <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                         <Calendar className="h-4 w-4" />
-                        <span>Logged on {error.date.toLocaleDateString()}</span>
+                        <span>Registrado em {error.date.toLocaleDateString('pt-BR')}</span>
                       </div>
                     </div>
                     <Button 
@@ -339,7 +339,7 @@ export const ErrorNotebook = ({ subjects, errors, setErrors, onBack }: ErrorNote
                 {error.explanation && (
                   <CardContent className="pt-0">
                     <div className="bg-muted/50 p-3 rounded-lg">
-                      <p className="text-sm font-medium mb-1">Explanation:</p>
+                      <p className="text-sm font-medium mb-1">Explicação:</p>
                       <p className="text-sm text-muted-foreground">{error.explanation}</p>
                     </div>
                   </CardContent>

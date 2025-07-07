@@ -24,12 +24,12 @@ interface SubjectManagerProps {
 }
 
 const subjectColors = [
-  { name: 'Blue', value: 'bg-blue-500', class: 'bg-blue-500' },
-  { name: 'Green', value: 'bg-green-500', class: 'bg-green-500' },
-  { name: 'Purple', value: 'bg-purple-500', class: 'bg-purple-500' },
-  { name: 'Orange', value: 'bg-orange-500', class: 'bg-orange-500' },
-  { name: 'Pink', value: 'bg-pink-500', class: 'bg-pink-500' },
-  { name: 'Teal', value: 'bg-teal-500', class: 'bg-teal-500' },
+  { name: 'Azul', value: 'bg-blue-500', class: 'bg-blue-500' },
+  { name: 'Verde', value: 'bg-green-500', class: 'bg-green-500' },
+  { name: 'Roxo', value: 'bg-purple-500', class: 'bg-purple-500' },
+  { name: 'Laranja', value: 'bg-orange-500', class: 'bg-orange-500' },
+  { name: 'Rosa', value: 'bg-pink-500', class: 'bg-pink-500' },
+  { name: 'Verde-água', value: 'bg-teal-500', class: 'bg-teal-500' },
 ];
 
 export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManagerProps) => {
@@ -44,8 +44,8 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
   const addSubject = () => {
     if (!newSubject.name.trim()) {
       toast({
-        title: "Error",
-        description: "Please enter a subject name",
+        title: "Erro",
+        description: "Por favor, insira o nome da matéria",
         variant: "destructive",
       });
       return;
@@ -53,8 +53,8 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
 
     if (subjects.length >= 6) {
       toast({
-        title: "Limit Reached",
-        description: "You can only add up to 6 subjects",
+        title: "Limite Atingido",
+        description: "Você pode adicionar até 6 matérias",
         variant: "destructive",
       });
       return;
@@ -73,8 +73,8 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
     setIsDialogOpen(false);
     
     toast({
-      title: "Subject Added",
-      description: `${subject.name} has been added to your study cycle`,
+      title: "Matéria Adicionada",
+      description: `${subject.name} foi adicionada ao seu ciclo de estudos`,
     });
   };
 
@@ -83,8 +83,8 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
     setSubjects(subjects.filter(s => s.id !== id));
     
     toast({
-      title: "Subject Removed",
-      description: `${subject?.name} has been removed from your study cycle`,
+      title: "Matéria Removida",
+      description: `${subject?.name} foi removida do seu ciclo de estudos`,
     });
   };
 
@@ -106,6 +106,15 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
     }
   };
 
+  const getCategoryName = (category: string) => {
+    switch (category) {
+      case 'theoretical': return 'Teórica';
+      case 'practical': return 'Prática';
+      case 'mixed': return 'Mista';
+      default: return 'Teórica';
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted p-4">
       <div className="max-w-4xl mx-auto space-y-6">
@@ -116,8 +125,8 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
               <ArrowLeft className="h-4 w-4" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold">Subject Management</h1>
-              <p className="text-muted-foreground">Organize your study subjects ({subjects.length}/6)</p>
+              <h1 className="text-2xl font-bold">Gerenciamento de Matérias</h1>
+              <p className="text-muted-foreground">Organize suas matérias de estudo ({subjects.length}/6)</p>
             </div>
           </div>
 
@@ -125,29 +134,29 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
             <DialogTrigger asChild>
               <Button disabled={subjects.length >= 6}>
                 <Plus className="h-4 w-4 mr-2" />
-                Add Subject
+                Adicionar Matéria
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Add New Subject</DialogTitle>
+                <DialogTitle>Adicionar Nova Matéria</DialogTitle>
                 <DialogDescription>
-                  Add a new subject to your study cycle. You can have up to 6 subjects.
+                  Adicione uma nova matéria ao seu ciclo de estudos. Você pode ter até 6 matérias.
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="subject-name">Subject Name</Label>
+                  <Label htmlFor="subject-name">Nome da Matéria</Label>
                   <Input
                     id="subject-name"
-                    placeholder="e.g., Mathematics, Physics, Chemistry"
+                    placeholder="ex: Direito Constitucional, Matemática, Português"
                     value={newSubject.name}
                     onChange={(e) => setNewSubject(prev => ({ ...prev, name: e.target.value }))}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Category</Label>
+                  <Label>Categoria</Label>
                   <Select 
                     value={newSubject.category} 
                     onValueChange={(value: 'theoretical' | 'practical' | 'mixed') => 
@@ -158,15 +167,15 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="theoretical">📚 Theoretical</SelectItem>
-                      <SelectItem value="practical">🔧 Practical</SelectItem>
-                      <SelectItem value="mixed">⚖️ Mixed</SelectItem>
+                      <SelectItem value="theoretical">📚 Teórica</SelectItem>
+                      <SelectItem value="practical">🔧 Prática</SelectItem>
+                      <SelectItem value="mixed">⚖️ Mista</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Color</Label>
+                  <Label>Cor</Label>
                   <div className="flex space-x-2">
                     {subjectColors.map((color) => (
                       <button
@@ -182,9 +191,9 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
 
                 <div className="flex justify-end space-x-2">
                   <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                    Cancel
+                    Cancelar
                   </Button>
-                  <Button onClick={addSubject}>Add Subject</Button>
+                  <Button onClick={addSubject}>Adicionar Matéria</Button>
                 </div>
               </div>
             </DialogContent>
@@ -196,15 +205,15 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
           <Card className="text-center py-12">
             <CardContent>
               <BookOpen className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">No Subjects Added</h3>
+              <h3 className="text-xl font-semibold mb-2">Nenhuma Matéria Adicionada</h3>
               <p className="text-muted-foreground mb-4">
-                Start by adding your first subject to begin organizing your study routine
+                Comece adicionando sua primeira matéria para organizar sua rotina de estudos
               </p>
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
                   <Button>
                     <Plus className="h-4 w-4 mr-2" />
-                    Add Your First Subject
+                    Adicionar Sua Primeira Matéria
                   </Button>
                 </DialogTrigger>
               </Dialog>
@@ -231,19 +240,19 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
                   </div>
                   <CardDescription className="flex items-center space-x-2">
                     <span>{getCategoryIcon(subject.category)}</span>
-                    <span className="capitalize">{subject.category}</span>
+                    <span>{getCategoryName(subject.category)}</span>
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Total Hours</span>
+                      <span className="text-sm text-muted-foreground">Total de Horas</span>
                       <Badge variant="outline">{subject.totalHours}h</Badge>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Category</span>
+                      <span className="text-sm text-muted-foreground">Categoria</span>
                       <Badge className={getCategoryColor(subject.category)}>
-                        {subject.category}
+                        {getCategoryName(subject.category)}
                       </Badge>
                     </div>
                   </div>
@@ -257,9 +266,9 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
         {subjects.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle>Study Cycle Preview</CardTitle>
+              <CardTitle>Prévia do Ciclo de Estudos</CardTitle>
               <CardDescription>
-                Your subjects will be rotated in this order to ensure balanced learning
+                Suas matérias serão alternadas nesta ordem para garantir aprendizado equilibrado
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -283,15 +292,15 @@ export const SubjectManager = ({ subjects, setSubjects, onBack }: SubjectManager
         {/* Tips */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Organization Tips</CardTitle>
+            <CardTitle className="text-lg">Dicas de Organização</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>• <strong>Theoretical subjects:</strong> Heavy reading, concepts, theory</li>
-              <li>• <strong>Practical subjects:</strong> Problem-solving, calculations, applications</li>
-              <li>• <strong>Mixed subjects:</strong> Combination of theory and practice</li>
-              <li>• The app will automatically alternate subject types to prevent mental fatigue</li>
-              <li>• You can have up to 6 subjects in your rotation</li>
+              <li>• <strong>Matérias teóricas:</strong> Leitura pesada, conceitos, teoria</li>
+              <li>• <strong>Matérias práticas:</strong> Resolução de problemas, cálculos, aplicações</li>
+              <li>• <strong>Matérias mistas:</strong> Combinação de teoria e prática</li>
+              <li>• O app alternará automaticamente os tipos de matéria para evitar fadiga mental</li>
+              <li>• Você pode ter até 6 matérias na sua rotação</li>
             </ul>
           </CardContent>
         </Card>

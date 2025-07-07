@@ -100,10 +100,10 @@ const Index = () => {
         {/* Header */}
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Focused Exam Prep
+            Foco nos Concursos
           </h1>
           <p className="text-muted-foreground text-lg">
-            Your personalized study companion for competitive exams
+            Seu companheiro personalizado de estudos para concursos públicos
           </p>
         </div>
 
@@ -116,7 +116,7 @@ const Index = () => {
                   <Clock className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Today's Study</p>
+                  <p className="text-sm text-muted-foreground">Estudo de Hoje</p>
                   <p className="text-2xl font-bold text-primary">{todaysHours.toFixed(1)}h</p>
                 </div>
               </div>
@@ -130,7 +130,7 @@ const Index = () => {
                   <BookOpen className="h-6 w-6 text-secondary" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Subjects</p>
+                  <p className="text-sm text-muted-foreground">Matérias</p>
                   <p className="text-2xl font-bold text-secondary">{subjects.length}/6</p>
                 </div>
               </div>
@@ -144,7 +144,7 @@ const Index = () => {
                   <Target className="h-6 w-6 text-warning" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Errors Logged</p>
+                  <p className="text-sm text-muted-foreground">Erros Registrados</p>
                   <p className="text-2xl font-bold text-warning">{errors.length}</p>
                 </div>
               </div>
@@ -158,7 +158,7 @@ const Index = () => {
                   <TrendingUp className="h-6 w-6 text-accent" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Weekly Goal</p>
+                  <p className="text-sm text-muted-foreground">Meta Semanal</p>
                   <p className="text-2xl font-bold text-accent">{Math.round((todaysHours / dailyGoal) * 100)}%</p>
                 </div>
               </div>
@@ -171,10 +171,10 @@ const Index = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <TrendingUp className="h-5 w-5 text-primary" />
-              <span>Daily Progress</span>
+              <span>Progresso Diário</span>
             </CardTitle>
             <CardDescription>
-              {todaysHours.toFixed(1)} of {dailyGoal} hours completed today
+              {todaysHours.toFixed(1)} de {dailyGoal} horas completadas hoje
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -191,11 +191,11 @@ const Index = () => {
               <div className="p-4 bg-gradient-to-br from-primary to-primary-glow rounded-full w-16 h-16 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Clock className="h-8 w-8 text-white mx-auto mt-1" />
               </div>
-              <h3 className="font-semibold text-lg mb-2">Start Session</h3>
+              <h3 className="font-semibold text-lg mb-2">Iniciar Sessão</h3>
               <p className="text-sm text-muted-foreground mb-3">
-                {nextSubject ? `Next: ${nextSubject.name}` : 'Set up subjects first'}
+                {nextSubject ? `Próxima: ${nextSubject.name}` : 'Configure as matérias primeiro'}
               </p>
-              <Badge variant="secondary">1 Hour Focus</Badge>
+              <Badge variant="secondary">1 Hora de Foco</Badge>
             </CardContent>
           </Card>
 
@@ -206,11 +206,11 @@ const Index = () => {
               <div className="p-4 bg-gradient-to-br from-secondary to-secondary-soft rounded-full w-16 h-16 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <BookOpen className="h-8 w-8 text-white mx-auto mt-1" />
               </div>
-              <h3 className="font-semibold text-lg mb-2">My Subjects</h3>
+              <h3 className="font-semibold text-lg mb-2">Minhas Matérias</h3>
               <p className="text-sm text-muted-foreground mb-3">
-                Manage your study subjects
+                Gerencie suas matérias de estudo
               </p>
-              <Badge variant="outline">{subjects.length}/6 Subjects</Badge>
+              <Badge variant="outline">{subjects.length}/6 Matérias</Badge>
             </CardContent>
           </Card>
 
@@ -221,11 +221,11 @@ const Index = () => {
               <div className="p-4 bg-gradient-to-br from-warning to-warning/80 rounded-full w-16 h-16 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Target className="h-8 w-8 text-warning-foreground mx-auto mt-1" />
               </div>
-              <h3 className="font-semibold text-lg mb-2">Error Notebook</h3>
+              <h3 className="font-semibold text-lg mb-2">Caderno de Erros</h3>
               <p className="text-sm text-muted-foreground mb-3">
-                Track and review mistakes
+                Registre e revise seus erros
               </p>
-              <Badge variant="destructive">{errors.length} Errors</Badge>
+              <Badge variant="destructive">{errors.length} Erros</Badge>
             </CardContent>
           </Card>
 
@@ -236,11 +236,11 @@ const Index = () => {
               <div className="p-4 bg-gradient-to-br from-accent to-accent-soft rounded-full w-16 h-16 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Plus className="h-8 w-8 text-white mx-auto mt-1" />
               </div>
-              <h3 className="font-semibold text-lg mb-2">Reviews</h3>
+              <h3 className="font-semibold text-lg mb-2">Revisões</h3>
               <p className="text-sm text-muted-foreground mb-3">
-                Spaced repetition schedule
+                Cronograma de repetição espaçada
               </p>
-              <Badge variant="outline">Schedule</Badge>
+              <Badge variant="outline">Cronograma</Badge>
             </CardContent>
           </Card>
         </div>
@@ -249,8 +249,8 @@ const Index = () => {
         {subjects.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle>Today's Study Plan</CardTitle>
-              <CardDescription>Suggested study sequence for optimal learning</CardDescription>
+              <CardTitle>Plano de Estudo de Hoje</CardTitle>
+              <CardDescription>Sequência sugerida de estudos para aprendizado otimizado</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -259,7 +259,7 @@ const Index = () => {
                     <div className="text-2xl font-bold text-muted-foreground">{index + 1}</div>
                     <div>
                       <p className="font-medium">{subject.name}</p>
-                      <p className="text-sm text-muted-foreground">1 hour session</p>
+                      <p className="text-sm text-muted-foreground">Sessão de 1 hora</p>
                     </div>
                   </div>
                 ))}
